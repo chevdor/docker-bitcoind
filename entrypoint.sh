@@ -5,10 +5,11 @@ set -euo pipefail
 export PATH=/usr/local/bin:$PATH
 
 # See https://github.com/jamesob/docker-bitcoind/pull/16
-sudo /usr/bin/append-to-hosts "$(ip -4 route list match 0/0 | awk '{print $3 "\thost.docker.internal"}')"
+# sudo /usr/bin/append-to-hosts "$(ip -4 route list match 0/0 | awk '{print $3 "\thost.docker.internal"}')"
 
-BITCOIN_DIR=/bitcoin/data
+BITCOIN_DIR=/data
 BITCOIN_CONF=/bitcoin/bitcoin.conf
+MIN_RELAY_TX_FEE=${MIN_RELAY_TX_FEE:-"0"}
 
 if [ -z "${BTC_RPCPASSWORD:-}" ]; then
   # Provide a random password.
@@ -92,10 +93,11 @@ EOF
 echo "Created new configuration at ${BITCOIN_CONF}"
 fi
 
-chmod 0600 "${BITCOIN_CONF}"
+# chmod 0600 "${BITCOIN_CONF}"
+
 
 if [ $# -eq 0 ]; then
-  exec bitcoind -datadir=${BITCOIN_DIR} -conf=${BITCOIN_CONF}
+  exec bitcoind -datadir=${BITCOIN_DIR} -conf=${BITCOIN_CONF} -minrelaytxfee=${MIN_RELAY_TX_FEE}
 else
   exec "$@"
 fi

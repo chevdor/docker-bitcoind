@@ -33,6 +33,7 @@ VERSIONS=(
 0.21.2
 22.0
 23.0
+25.0
 )
 
 err() {
@@ -82,8 +83,8 @@ cd "$TMPDIR"
 curl -O "${URL_BASE}/SHA256SUMS.asc"
 curl -O "${URL_BASE}/${FILENAME}"
 
-# In version 22.0, release signing changed from a single key signing in 
-# SHA256SUMS.asc to multiple keys signing SHA256SUMS. 
+# In version 22.0, release signing changed from a single key signing in
+# SHA256SUMS.asc to multiple keys signing SHA256SUMS.
 #
 # See here for more information: https://github.com/bitcoin/bitcoin/pull/23020
 
@@ -98,7 +99,7 @@ if [[ "$VERSION" < "22.0" ]]; then
 else
   # See bitcoin/contrib/builder-keys/keys.txt for current values.
   #
-  # I've chosen a subset of builder keys here who are well-known and reliably 
+  # I've chosen a subset of builder keys here who are well-known and reliably
   # sign for releases.
 
   # Wladimir
