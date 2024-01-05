@@ -9,7 +9,6 @@ export PATH=/usr/local/bin:$PATH
 
 BITCOIN_DIR=/data
 BITCOIN_CONF=/bitcoin/bitcoin.conf
-MIN_RELAY_TX_FEE=${MIN_RELAY_TX_FEE:-"0"}
 
 if [ -z "${BTC_RPCPASSWORD:-}" ]; then
   # Provide a random password.
@@ -95,9 +94,12 @@ fi
 
 # chmod 0600 "${BITCOIN_CONF}"
 
-
 if [ $# -eq 0 ]; then
-  exec bitcoind -datadir=${BITCOIN_DIR} -conf=${BITCOIN_CONF} -minrelaytxfee=${MIN_RELAY_TX_FEE}
+  exec bitcoind \
+    -datadir=${BITCOIN_DIR} \
+    -conf=${BITCOIN_CONF} \
+    -minrelaytxfee=${MIN_RELAY_TX_FEE:-0} \
+    -maxmempool=${BTC_MAX_MEMPOOL:-300}
 else
   exec "$@"
 fi
